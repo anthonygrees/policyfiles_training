@@ -15,6 +15,21 @@ The base policyfile will be used by all the nodes.
 Run the following command in the directory ```C:\Users\chef\cookbooks\policyfiles>```. If the directory does not exist, create it:
 ```
 $ chef generate policyfile base
+```
+
+Your output will look like this:
+```
+C:\Users\chef\cookbooks\policyfiles> chef generate policyfile base
+Recipe: code_generator::policyfile
+  * template[C:/Users/chef/cookbooks/policyfiles/base.rb] action create
+    - create new file C:/Users/chef/cookbooks/policyfiles/base.rb
+    - update content in file C:/Users/chef/cookbooks/policyfiles/base.rb from none to 533141
+    (diff output suppressed by config)
+C:\Users\chef\cookbooks\policyfiles>
+```
+
+Now edit the file
+```
 $ code base.rb
 ```
 
@@ -44,8 +59,8 @@ run_list 'audit_agr', 'chef-client'
 The cookbook source could be from public supermarket, private supermarket, a chef server, a local repo or even an artifact repo.
 Here are some examples:
 ```
-default_source :supermarket
-default_source :supermarket, "https://mysupermarket.example"
+default_source :supermarket  # Public Supermarket
+default_source :supermarket, "https://mysupermarket.example"  # Private Supermarkey
 default_source :chef_server, "https://chef-server.example/organizations/example"
 default_source :chef_repo, "path/to/repo" 
 default_source :artifactory, "https://artifactory.example/api/chef/my-supermarket
@@ -211,7 +226,7 @@ $ git commit -a -m 'created policyfile and lock'
 ## Step 5: Update the attributes via policyfile
 Policyfiles allow us to set attributes. Since Policyfiles don’t support roles, these attributes replace role attributes in the precedence hierarchy. In our ```base.rb``` policyfile, we set attributes using the same syntax we use in cookbooks. 
 
-Add the following lines to the bottom of your ```base.rb policyfile:
+Add the following lines to the bottom of your ```base.rb``` policyfile:
 ```
 # Override the Chef Client cookbook with the following attributes
 override['chef_client']['interval']    = '200'
@@ -257,23 +272,49 @@ You can see that we have overridden the ```interval``` and the ```splay```.
   },
 ```
 
+## Step 7: Upload the policyfile to the Chef Server
+Let's upload the policyfile to the Chef Server and add it to the Policy Group of ```dev_dc1`` for development in Data Center 1.
+
+To do this, we use the chef push subcommand to upload an existing Policyfile.lock.json file to the Chef server, along with all of the cookbooks that are contained in the file. The ```base.lock.json``` file will be applied to the specified policy group, which is a set of nodes that share the same run-list and cookbooks.
+```
+$ chef push dev_dc1 base.rb
+```
+
+Your output will look something like this:
+```
+C:\Users\chef\cookbooks\policyfiles> chef push dev_dc1 base.rb
+Uploading policy to policy group dev_dc1
+Uploaded audit       7.3.0  (ec192594)
+Uploaded audit_agr   2.2.2  (997012b6)
+Uploaded chef-client 10.2.2 (665de504)
+Uploaded cron        6.2.1  (08676b5c)
+Uploaded logrotate   2.2.0  (53e09234)
+Uploaded windows     5.2.3  (b9450a24)
+C:\Users\chef\cookbooks\policyfiles>
+```
+
+## Step 8: What Policy is on our Chef Server ?
+Use the ```chef show-policy``` subcommand to display revisions for every base.rb file that is on the Chef server. By default, only active policy revisions are shown. When both a policy and policy group are specified, the contents of the active ```base.lock.json``` file for the policy group is returned.
+
+```
+$ chef show-policy base
+```
+Your output will look something like this:
+```
+C:\Users\chef\cookbooks\policyfiles> chef show-policy
+
+base
+====
+
+* dev_dc1:  6e7735d685
+
+C:\Users\chef\cookbooks\policyfiles>
+```
+
 
 ```
 override['audit']['profiles']['linux-patch-baseline'] = { 'url': 'https://github.com/dev-sec/linux-patch-baseline/archive/0.4.0.zip' }
 ```
 
---------
-Use the chef push subcommand to upload an existing Policyfile.lock.json file to the Chef server, along with all of the cookbooks that are contained in the file. The Policyfile.lock.json file will be applied to the specified policy group, which is a set of nodes that share the same run-list and cookbooks.
 
-Syntax¶
-This subcommand has the following syntax:
 
-$ chef push POLICY_GROUP POLICY_FILE (options)
-
----------
-Use the chef show-policy subcommand to display revisions for every Policyfile.rb file that is on the Chef server. By default, only active policy revisions are shown. When both a policy and policy group are specified, the contents of the active Policyfile.lock.json file for the policy group is returned.
-
-Syntax¶
-This subcommand has the following syntax:
-
-$ chef show-policy POLICY_NAME POLICY_GROUP (options)
