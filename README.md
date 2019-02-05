@@ -5,10 +5,16 @@ A training lab on how to use Chef Policyfiles
 Policies are built by defining a Policyfile, which looks similar to a Chef Role combined with a Berksfile. 
 
 When a Policy is ready for upload, a workstation command included with the ChefDK compiles the Policyfile into a ```Policyfile.lock``` file. This locked Policy, along with all of the cookbooks it references, are treated as a single unit by the Chef tooling. The bundle of ```Policyfile.lock``` and cookbooks are uploaded to the server simultaneously. 
+
 ## Why use Policyfiles ?
 Policyfiles provide cookbook dependency management and replaces roles and environments. This allows you to get exact, repeatable results !
 
 Policies make your chef-client runs completely repeatable, because cookbooks referenced in a Policy are identified by a unique hash based on their contents. This means that once the lock file + cookbook bundle has been generated, the code underlying it will never change.
+
+Policyfiles ensure all dependent cookbooks are pinned, all role attributes are saved and it is all versioned, testable and ready for your pipeline.
+
+```policy_name```  = role/runlist
+```policy_group``` = environment
 
 # Create a Base Policyfile
 ## Step 1: Create a base policyfile
@@ -275,6 +281,9 @@ You can see that we have overridden the ```interval``` and the ```splay```.
 ```
 
 ## Step 7: Upload the policyfile to the Chef Server
+To do this we need to understand about ```policy_group```s.  A policy group is essentially an environment and allows you to assign multiple nodes to the group.
+
+### Development Policy Group
 Let's upload the policyfile to the Chef Server and add it to the Policy Group of ```dev_dc1`` for development in Data Center 1.
 
 To do this, we use the chef push subcommand to upload an existing Policyfile.lock.json file to the Chef server, along with all of the cookbooks that are contained in the file. The ```base.lock.json``` file will be applied to the specified policy group, which is a set of nodes that share the same run-list and cookbooks.
@@ -295,7 +304,22 @@ Uploaded windows     5.2.3  (b9450a24)
 C:\Users\chef\cookbooks\policyfiles>
 ```
 
-## Step 8: What Policy is on our Chef Server ?
+### System Test Policy Group
+Your testing in ```dev_dc1`` has passed.  Let's promote to policy group ```sys_dc1```.
+```
+$ chef push sys_dc1 base.rb
+```
+
+### Compare with ```chef diff```
+Use the ```chef diff``` subcommand to display an itemized comparison of two revisions of a ```Policyfile.lock.json``` file.
+
+$ chef diff staging
+Compare locks for two policy groups
+
+$ chef diff production...staging
+
+
+## Step 8: How do you know Policy is on a Chef Server ?
 Use the ```chef show-policy``` subcommand to display revisions for every base.rb file that is on the Chef server. By default, only active policy revisions are shown. When both a policy and policy group are specified, the contents of the active ```base.lock.json``` file for the policy group is returned.
 
 ```
