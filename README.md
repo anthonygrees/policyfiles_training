@@ -40,6 +40,16 @@ run_list 'audit_agr', 'chef-client'
 
 ```
 
+The cookbook source could be from public supermarket, private supermarket, a chef server, a local repo or even an artifact repo.
+Here are some examples:
+```
+default_source :supermarket
+default_source :supermarket, "https://mysupermarket.example"
+default_source :chef_server, "https://chef-server.example/organizations/example"
+default_source :chef_repo, "path/to/repo" 
+default_source :artifactory, "https://artifactory.example/api/chef/my-supermarket
+```
+
 ## Step 2: Generate the ```lock`` file
 With our basic base.rb policyfile, we run ```chef install`` to fetch dependencies and generate a ```base.lock.json```.
 
@@ -67,6 +77,12 @@ C:\Users\chef\cookbooks\policyfiles>
 
 ## Step 3: Let's take a look at the lock file
 Let’s take a look at the base.lock.json we just created. We’ll go over each part individually:
+
+Run the collowing command:
+```
+$ code .
+```
+This will show us the ```base.lock.json``` file
 
 ### Revision ID
 Each time we create or update the lock, chef will automatically generate a revision_id based on the content. These values are used to automatically version your policies, so that you can apply different revsions of a policy to different set of servers. We’ll see this in action a little later.
@@ -158,8 +174,40 @@ You will notice that it has included more cookbooks than we specified.  This is 
       }
     }
   },
-  ```
-  
+```
+
+### Attributes
+Policyfiles can have attributes that replace role attributes. We’ll see these a little later.
+```
+"default_attributes": {
+
+  },
+  "override_attributes": {
+
+  },
+```
+
+### Solution Dependencies
+You can ignore the ```solution_dependencies``` section. It’s used to keep track of dependencies in your cookbooks so ChefDK can check whether changes to your cookbooks are compatible with their dependencies without having to download the full cookbook list from supermarket every time.
+```
+"default_attributes": {
+
+  },
+  "override_attributes": {
+
+  },
+```
+
+## Step 4: Commit the lockfile
+Let's commit our changes so we can compare it to an updated version later and to see what changed.
+
+Run the following commands:
+```
+$ git add base.lock.json
+$ git commit -a -m 'created policyfile and lock'
+```
+
+
 
 
 ```
