@@ -14,6 +14,7 @@ The base policyfile will be used by all the nodes.
 
 Run the following command in the directory ```C:\Users\chef\cookbooks\policyfiles>```. If the directory does not exist, create it:
 ```
+$ chef generate policyfile base
 $ code base.rb
 ```
 
@@ -50,7 +51,7 @@ default_source :chef_repo, "path/to/repo"
 default_source :artifactory, "https://artifactory.example/api/chef/my-supermarket
 ```
 
-## Step 2: Generate the ```lock`` file
+## Step 2: Generate the ```lock``` file
 With our basic base.rb policyfile, we run ```chef install`` to fetch dependencies and generate a ```base.lock.json```.
 
 So run the following command:
@@ -207,13 +208,72 @@ $ git add base.lock.json
 $ git commit -a -m 'created policyfile and lock'
 ```
 
+## Step 5: Update the attributes via policyfile
+Policyfiles allow us to set attributes. Since Policyfiles don’t support roles, these attributes replace role attributes in the precedence hierarchy. In our ```base.rb``` policyfile, we set attributes using the same syntax we use in cookbooks. 
 
-
-
+Add the following lines to the bottom of your ```base.rb policyfile:
 ```
 # Override the Chef Client cookbook with the following attributes
 override['chef_client']['interval']    = '200'
 override['chef_client']['splay']       = '30'
+```
 
+Now run the ```chef update``` command to to apply the changes to the ```base.loc.json```:
+```
+$ chef update base.rb
+```
+
+Your output will look something like this:
+```
+C:\Users\chef\cookbooks\policyfiles> chef update base.rb
+Updated attributes in C:/Users/chef/cookbooks/policyfiles/base.lock.json
+Building policy base
+Expanded run list: recipe[audit_agr], recipe[chef-client]
+Caching Cookbooks...
+Installing chef-client >= 0.0.0 from git
+Installing audit_agr   >= 0.0.0 from git
+Using      cron        6.2.1
+Using      logrotate   2.2.0
+Using      windows     5.2.3
+Using      audit       7.3.0
+
+Lockfile written to C:/Users/chef/cookbooks/policyfiles/base.lock.json
+Policy revision id: 6e7735d685d3a602c7b97ae2eedaf30b126f7820a83a56abe1457aec5643d3a5
+C:\Users\chef\cookbooks\policyfiles>
+```
+
+## Step 6: Take another look at the lockfile again
+We have updated the attributes for the ```chef_client``` and used an override.  We will see this in the ```base.lock.json``` under the ```default_attributes``` section.
+You can see that we have overridden the ```interval``` and the ```splay```.
+```
+"default_attributes": {
+
+  },
+  "override_attributes": {
+    "chef_client": {
+      "interval": "200",
+      "splay": "30"
+    }
+  },
+```
+
+
+```
 override['audit']['profiles']['linux-patch-baseline'] = { 'url': 'https://github.com/dev-sec/linux-patch-baseline/archive/0.4.0.zip' }
 ```
+
+--------
+Use the chef push subcommand to upload an existing Policyfile.lock.json file to the Chef server, along with all of the cookbooks that are contained in the file. The Policyfile.lock.json file will be applied to the specified policy group, which is a set of nodes that share the same run-list and cookbooks.
+
+Syntax¶
+This subcommand has the following syntax:
+
+$ chef push POLICY_GROUP POLICY_FILE (options)
+
+---------
+Use the chef show-policy subcommand to display revisions for every Policyfile.rb file that is on the Chef server. By default, only active policy revisions are shown. When both a policy and policy group are specified, the contents of the active Policyfile.lock.json file for the policy group is returned.
+
+Syntax¶
+This subcommand has the following syntax:
+
+$ chef show-policy POLICY_NAME POLICY_GROUP (options)
