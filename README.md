@@ -292,7 +292,7 @@ No changes for policy lock 'base' between 'policy_group:dev_dc1' and 'policy_gro
 C:\Users\chef\cookbooks\policies>
 ```
 
-# No MODIFY the Base Policyfile
+# Now lets MODIFY the Base Policyfile
 ## Step 1: Update the attributes via policyfile
 Policyfiles allow us to set attributes. Since Policyfiles don’t support roles, these attributes replace role attributes in the precedence hierarchy. In our ```base.rb``` policyfile, we set attributes using the same syntax we use in cookbooks. 
 
@@ -327,7 +327,7 @@ Policy revision id: 6e7735d685d3a602c7b97ae2eedaf30b126f7820a83a56abe1457aec5643
 C:\Users\chef\cookbooks\policyfiles>
 ```
 
-## Step 6: Take another look at the lockfile again
+## Step 2: Take another look at the lockfile again
 We have updated the attributes for the ```chef_client``` and used an override.  We will see this in the ```base.lock.json``` under the ```default_attributes``` section.
 You can see that we have overridden the ```interval``` and the ```splay```.
 ```
@@ -342,6 +342,11 @@ You can see that we have overridden the ```interval``` and the ```splay```.
   },
 ```
 
+## Step 3: Update
+
+## Step 4: Upload to Server
+
+## Step 5: Compare changes
 
 # Create a Webserver Policyfile
 
