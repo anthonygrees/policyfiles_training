@@ -419,29 +419,29 @@ C:\Users\chef\cookbooks\policies>
 ```
 
 # Part C: Policyfiles can inherit other Policyfiles !
-We can use our base policyfile in other policyfiles.  Let's create a WebServer policyfile now.
+We can use our base policyfile in other policyfiles.  Let's create a enterprise policyfile now.
 
-## Step 1: CREATE a new ```policyfile``` called webserver
+## Step 1: CREATE a new ```policyfile``` called enterprise
 Run the following command:
 ```
-$ chef generate policyfile webserver
+$ chef generate policyfile enterprise
 ```
 
 Your output will look like this:
 ```
-C:\Users\chef\cookbooks\policies> chef generate policyfile webserver
+C:\Users\chef\cookbooks\policies> chef generate policyfile enterprise
 Recipe: code_generator::policyfile
-  * template[C:/Users/chef/cookbooks/policies/webserver.rb] action create
-    - create new file C:/Users/chef/cookbooks/policies/webserver.rb
-    - update content in file C:/Users/chef/cookbooks/policies/webserver.rb from none to 928395
+  * template[C:/Users/chef/cookbooks/policies/enterprise.rb] action create
+    - create new file C:/Users/chef/cookbooks/policies/enterprise.rb
+    - update content in file C:/Users/chef/cookbooks/policies/enterprise.rb from none to 928395
     (diff output suppressed by config)
 C:\Users\chef\cookbooks\policies>
 ```
 
-## Step 2: Edit the webserver.rb file
+## Step 2: Edit the enterprise.rb file
 Now edit the file
 ```
-$ code webserver.rb
+$ code enterprise.rb
 ```
 
 In Visual Studio Code, create the following:
@@ -453,7 +453,7 @@ In Visual Studio Code, create the following:
 # https://docs.chef.io/policyfile.html
 
 # A name that describes what the system you're building with Chef does.
-name 'webserver'
+name 'enterprise'
 
 include_policy 'base', path: './base.lock.json'
 
@@ -474,8 +474,8 @@ override['audit']['profiles']['linux-patch-baseline'] = { 'url': 'https://github
 
 You will see the following output
 ```
-C:\Users\chef\cookbooks\policies> chef install webserver.rb
-Building policy webserver
+C:\Users\chef\cookbooks\policies> chef install enterprise.rb
+Building policy enterprise
 Expanded run list: recipe[audit_agr::default], recipe[chef-client::default], recipe[ntp]
 Caching Cookbooks...
 Using      audit_agr   2.2.2
@@ -486,12 +486,12 @@ Using      cron        6.2.1
 Using      logrotate   2.2.0
 Using      windows     5.2.3
 
-Lockfile written to C:/Users/chef/cookbooks/policies/webserver.lock.json
+Lockfile written to C:/Users/chef/cookbooks/policies/enterprise.lock.json
 Policy revision id: 2c0e98fbaf62f59066821d20b31ad92e11869b71092e7af02174f647fd84a546
 C:\Users\chef\cookbooks\policies>
 ```
 
-## Step 3: Take a look at the ```webserver.lock.json```
+## Step 3: Take a look at the ```enterprise.lock.json```
 You will notice that there is a section called ```included_policy_locks``` that has the ```include``` for our base.rb
 
 ```
@@ -510,12 +510,12 @@ You will notice that there is a section called ```included_policy_locks``` that 
 Let's upload the policyfile to the Chef Server and add it to the Policy Group of ```dev_dc1`` for development in Data Center 1.
 
 ```
-$ chef push dev_dc1 webserver.rb
+$ chef push dev_dc1 enterprise.rb
 ```
 
 Your output will look something like this:
 ```
-C:\Users\chef\cookbooks\policies> chef push dev_dc1 webserver.rb
+C:\Users\chef\cookbooks\policies> chef push dev_dc1 enterprise.rb
 Uploading policy to policy group dev_dc1
 Using    audit       7.3.0  (ec192594)
 Using    audit_agr   2.2.2  (997012b6)
@@ -529,15 +529,15 @@ C:\Users\chef\cookbooks\policies>
 
 ## Step 5: Check the Policy
 
-### First, let's check the ```webserver policyfile```
+### First, let's check the ```enterprise policyfile```
 Run the ```chef show-policy``` command
 ```
-$ chef show-policy webserver
+$ chef show-policy enterprise
 ```
 Your output will look something like this:
 ```
-C:\Users\chef\cookbooks\policies> chef show-policy webserver
-webserver
+C:\Users\chef\cookbooks\policies> chef show-policy enterprise
+enterprise
 =========
 
 * dev_dc1:   2c0e98fbaf
@@ -547,7 +547,7 @@ webserver
 C:\Users\chef\cookbooks\policies>
 ```
 
-### Now, let's check both the ```base``` and ```webserver policyfiles```
+### Now, let's check both the ```base``` and ```enterprise policyfiles```
 Run the ```chef show-policy``` command
 ```
 $ chef show-policy
@@ -562,7 +562,7 @@ base
 * prod_dc1:  f458a363e1
 * sys_dc1:   f458a363e1
 
-webserver
+enterprise
 =========
 
 * dev_dc1:   2c0e98fbaf
@@ -596,15 +596,15 @@ stage2
 C:\Users\chef\cookbooks\policies>
 ```
 
-## Step 2: Assign the ```dev1``` node to the ```webserver``` policy and the ```dev_dc1``` policy group
+## Step 2: Assign the ```dev1``` node to the ```enterprise``` policy and the ```dev_dc1``` policy group
 Run the following command:
 ```
-$ knife node policy set dev1 dev_dc1 webserver
+$ knife node policy set dev1 dev_dc1 enterprise
 ```
 
 Your output will look something like this:
 ```
-C:\Users\chef\cookbooks\policies> knife node policy set dev1 dev_dc1 webserver
+C:\Users\chef\cookbooks\policies> knife node policy set dev1 dev_dc1 enterprise
 Successfully set the policy on node dev1
 C:\Users\chef\cookbooks\policies>
 ```
@@ -619,7 +619,7 @@ Your output will look something like this:
 ```
 C:\Users\chef\cookbooks\policies> knife node show dev1
 Node Name:   dev1
-Policy Name:  webserver
+Policy Name:  enterprise
 Policy Group: dev_dc1
 FQDN:        delivered.automate-demo.com
 IP:          18.237.142.79
@@ -630,3 +630,20 @@ Tags:
 C:\Users\chef\cookbooks\policies>
 ```
 
+# Part E: Be Careful
+The following is a list of areas to be careful of when using ```policyfiles```
+
+## Where to find your cookbooks
+If you have multiple sources and a cookbook with the same name in both sources, Chef won't know which source to choose.
+```
+# Where to find external cookbooks:
+default_source :supermarket
+default_source :chef_server
+```
+If a run-list or any dependencies require a cookbook that is present in more than one source, be explicit about which source is preferred. This will ensure that a cookbook is always pulled from an expected source. 
+```
+default_source :supermarket, "https://supermarket.example" do |s|
+  s.preferred_for "chef-client", "nginx", "mysql"
+end
+default_source :chef_server
+```
