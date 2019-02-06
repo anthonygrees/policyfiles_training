@@ -13,14 +13,15 @@ Policies make your chef-client runs completely repeatable, because cookbooks ref
 
 Policyfiles ensure all dependent cookbooks are pinned, all role attributes are saved and it is all versioned, testable and ready for your pipeline.
 
-```policy_name```  = role/runlist 
-```policy_group``` = environment
+If you are familuar with Chef Server roles, runlists and environments, then:
+- ```policy_name```  = role/runlist 
+- ```policy_group``` = environment
 
 # Create a Base Policyfile
 ## Step 1: Create a base policyfile
 The base policyfile will be used by all the nodes.
 
-Run the following command in the directory ```C:\Users\chef\cookbooks\policyfiles>```. If the directory does not exist, create it:
+Run the following command in the directory ```C:\Users\chef\cookbooks\policies>```. If the directory does not exist, create it:
 ```
 $ chef generate policyfile base
 ```
@@ -222,16 +223,77 @@ You can ignore the ```solution_dependencies``` section. It’s used to keep trac
   },
 ```
 
-## Step 4: Commit the lockfile
-Let's commit our changes so we can compare it to an updated version later and to see what changed.
+## Step 4: Upload the policyfile to the Chef Server
+To do this we need to understand about ```policy_group```s.  A policy group is essentially an environment and allows you to assign multiple nodes to the group of policies.
 
-Run the following commands:
+### Promote to the Development Policy Group
+Let's upload the policyfile to the Chef Server and add it to the Policy Group of ```dev_dc1`` for development in Data Center 1.
+
+To do this, we use the chef push subcommand to upload an existing Policyfile.lock.json file to the Chef server, along with all of the cookbooks that are contained in the file. The ```base.lock.json``` file will be applied to the specified policy group, which is a set of nodes that share the same run-list and cookbooks.
 ```
-$ git add base.lock.json
-$ git commit -a -m 'created policyfile and lock'
+$ chef push dev_dc1 base.rb
 ```
 
-## Step 5: Update the attributes via policyfile
+Your output will look something like this:
+```
+C:\Users\chef\cookbooks\policyfiles> chef push dev_dc1 base.rb
+Uploading policy to policy group dev_dc1
+Uploaded audit       7.3.0  (ec192594)
+Uploaded audit_agr   2.2.2  (997012b6)
+Uploaded chef-client 10.2.2 (665de504)
+Uploaded cron        6.2.1  (08676b5c)
+Uploaded logrotate   2.2.0  (53e09234)
+Uploaded windows     5.2.3  (b9450a24)
+C:\Users\chef\cookbooks\policyfiles>
+```
+
+### Promote to the System Test Policy Group
+Your testing in ```dev_dc1`` has passed.  Let's promote to policy group ```sys_dc1```.
+```
+$ chef push sys_dc1 base.rb
+```
+
+### Promote to the Production Test Policy Group
+Your testing in ```sys_dc1`` has passed.  Let's promote to policy group ```prod_dc1```.
+```
+$ chef push prod_dc1 base.rb
+```
+
+### How do you know which Policy is on a Chef Server ?
+Use the ```chef show-policy``` subcommand to display revisions for every base.rb file that is on the Chef server. By default, only active policy revisions are shown. When both a policy and policy group are specified, the contents of the active ```base.lock.json``` file for the policy group is returned.
+
+```
+$ chef show-policy base
+```
+Each policy in each policy group is the same. Your output will look something like this:
+```
+C:\Users\chef\cookbooks\policies> chef show-policy
+base
+====
+
+* dev_dc1:   aa65b40c43
+* prod_dc1:  aa65b40c43
+* sys_dc1:   aa65b40c43
+
+C:\Users\chef\cookbooks\policies>
+```
+
+### Compare with ```chef diff```
+Use the ```chef diff``` subcommand to display an itemized comparison of two revisions of a ```Policyfile.lock.json``` file.
+
+Run the following command to see the difference between Development DC1 and Production DC1
+```
+$ chef diff .\base.lock.json dev_dc1...prod_dc1
+```
+Your output will look something like this.  There are no changes to display:
+```
+C:\Users\chef\cookbooks\policies> chef diff .\base.lock.json dev_dc1...prod_dc1
+No changes for policy lock 'base' between 'policy_group:dev_dc1' and 'policy_group:prod_dc1'
+C:\Users\chef\cookbooks\policies>
+```
+
+# No MODIFY the Base Policyfile
+## Step 1: Update the attributes via policyfile
 Policyfiles allow us to set attributes. Since Policyfiles don’t support roles, these attributes replace role attributes in the precedence hierarchy. In our ```base.rb``` policyfile, we set attributes using the same syntax we use in cookbooks. 
 
 Add the following lines to the bottom of your ```base.rb``` policyfile:
@@ -280,62 +342,6 @@ You can see that we have overridden the ```interval``` and the ```splay```.
   },
 ```
 
-## Step 7: Upload the policyfile to the Chef Server
-To do this we need to understand about ```policy_group```s.  A policy group is essentially an environment and allows you to assign multiple nodes to the group.
-
-### Development Policy Group
-Let's upload the policyfile to the Chef Server and add it to the Policy Group of ```dev_dc1`` for development in Data Center 1.
-
-To do this, we use the chef push subcommand to upload an existing Policyfile.lock.json file to the Chef server, along with all of the cookbooks that are contained in the file. The ```base.lock.json``` file will be applied to the specified policy group, which is a set of nodes that share the same run-list and cookbooks.
-```
-$ chef push dev_dc1 base.rb
-```
-
-Your output will look something like this:
-```
-C:\Users\chef\cookbooks\policyfiles> chef push dev_dc1 base.rb
-Uploading policy to policy group dev_dc1
-Uploaded audit       7.3.0  (ec192594)
-Uploaded audit_agr   2.2.2  (997012b6)
-Uploaded chef-client 10.2.2 (665de504)
-Uploaded cron        6.2.1  (08676b5c)
-Uploaded logrotate   2.2.0  (53e09234)
-Uploaded windows     5.2.3  (b9450a24)
-C:\Users\chef\cookbooks\policyfiles>
-```
-
-### System Test Policy Group
-Your testing in ```dev_dc1`` has passed.  Let's promote to policy group ```sys_dc1```.
-```
-$ chef push sys_dc1 base.rb
-```
-
-### Compare with ```chef diff```
-Use the ```chef diff``` subcommand to display an itemized comparison of two revisions of a ```Policyfile.lock.json``` file.
-
-$ chef diff staging
-Compare locks for two policy groups
-
-$ chef diff production...staging
-
-
-## Step 8: How do you know Policy is on a Chef Server ?
-Use the ```chef show-policy``` subcommand to display revisions for every base.rb file that is on the Chef server. By default, only active policy revisions are shown. When both a policy and policy group are specified, the contents of the active ```base.lock.json``` file for the policy group is returned.
-
-```
-$ chef show-policy base
-```
-Your output will look something like this:
-```
-C:\Users\chef\cookbooks\policyfiles> chef show-policy
-
-base
-====
-
-* dev_dc1:  6e7735d685
-
-C:\Users\chef\cookbooks\policyfiles>
-```
 
 # Create a Webserver Policyfile
 
