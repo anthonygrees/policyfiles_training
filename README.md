@@ -17,6 +17,11 @@ If you are familuar with Chef Server roles, runlists and environments, then:
 - ```policy_name```  = role/runlist 
 - ```policy_group``` = environment
 
+## How do you use a Policyfile ?
+The best way is whithin a pipeline.
+
+![Cookbook Pipeline](https://github.com/chef_pipelines/images/policyfile_pipeline.png)
+
 # Part A: CREATE a Base Policyfile
 ## Step 1: Create a base policyfile
 The base policyfile will be used by all the nodes.
