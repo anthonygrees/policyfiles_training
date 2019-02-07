@@ -24,6 +24,8 @@ The best way to use ```policyfiles``` is with in a pipeline.  Here is a Jenkins 
 ![Cookbook Pipeline](https://github.com/anthonygrees/chef_pipelines/blob/master/images/policyfile_pipeline.png)
 
 ## Training Lab
+This training lab is a hands on set of code examples to show you how ```policyfiles``` work.  It covers how to create and modify, plus using ```policy_groups``` and exporting them as tarballs.
+
 Let's write some code.
 
 - Module 1 - <a href="https://github.com/anthonygrees/policyfiles_training/blob/master/module/part_a.md">Create a Policyfile</a>
