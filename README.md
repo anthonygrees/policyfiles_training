@@ -472,6 +472,11 @@ override['audit']['profiles']['linux-patch-baseline'] = { 'url': 'https://github
 
 ```
 
+Now install the policy file
+```
+$ chef install enterprise.rb
+```
+
 You will see the following output
 ```
 C:\Users\chef\cookbooks\policies> chef install enterprise.rb
