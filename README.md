@@ -655,6 +655,21 @@ else
 end
 ```
 
+# Part F: Export a Policyfile
+Use the chef export subcommand to create a chef-zero-compatible chef-repo that contains the cookbooks described by a Policyfile.lock.json file. After a chef-zero-compatible chef-repo is copied to a node, the policy can be applied locally on that machine by running chef-client -z (local mode).
+
+Run the command to export as a tarball:
+```
+chef export base.rb c:\Users\chef\cookbooks --archive
+```
+
+You will see the following output:
+```
+C:\Users\chef\cookbooks\policies> chef export base.rb c:\Users\chef\cookbooks --archive
+Exported policy 'base' to c:/Users/chef/cookbooks/base-6e7735d685d3a602c7b97ae2eedaf30b126f7820a83a56abe1457aec5643d3a5.tgz
+C:\Users\chef\cookbooks\policies>
+```
+
 
 # NOTE: Be careful of the following
 The following is a list of areas to be careful of when using ```policyfiles```
