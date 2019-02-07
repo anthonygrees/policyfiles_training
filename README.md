@@ -1,4 +1,5 @@
 # Chef Policyfiles Training Lab
+![Policyfile](/images/policyfile.png)
 ## About
 A training lab on how to use Chef Policyfiles
 
