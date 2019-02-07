@@ -1,4 +1,4 @@
-# Policyfiles Training Lab
+# Chef Policyfiles Training Lab
 ## About
 A training lab on how to use Chef Policyfiles
 
