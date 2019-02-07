@@ -20,7 +20,7 @@ If you are familuar with Chef Server roles, runlists and environments, then:
 ## How do you use a Policyfile ?
 The best way is whithin a pipeline.  Here is an example, but you can see much more detail in this repo - https://github.com/anthonygrees/chef_pipelines
 
-![Cookbook Pipeline](https://github.com/anthonygrees/chef_pipelines/images/policyfile_pipeline.png)
+![Cookbook Pipeline](https://github.com/anthonygrees/chef_pipelines/blob/master/images/policyfile_pipeline.png)
 
 # Part A: CREATE a Base Policyfile
 ## Step 1: Create a base policyfile
