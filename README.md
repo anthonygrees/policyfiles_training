@@ -18,7 +18,7 @@ If you are familuar with Chef Server roles, runlists and environments, then:
 - ```policy_group``` = environment
 
 ## How do you use a Policyfile ?
-The best way is whithin a pipeline.  Here is an example, but you can see much more detail in this repo - https://github.com/anthonygrees/chef_pipelines
+The best way to use ```policyfiles``` is with in a pipeline.  Here is a Jenkins example to give you some ideas, but you can see much more detail in this repo - https://github.com/anthonygrees/chef_pipelines
 
 ![Cookbook Pipeline](https://github.com/anthonygrees/chef_pipelines/blob/master/images/policyfile_pipeline.png)
 
