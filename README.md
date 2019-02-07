@@ -692,7 +692,7 @@ Using    windows     5.2.3  (b9450a24)
 C:\Users\chef\cookbooks\policies>
 ```
 
-## Step 3: Chec the Policy Groups
+## Step 3: Check the Policy Groups
 Run the following command:
 ```
 $ chef show-policy
