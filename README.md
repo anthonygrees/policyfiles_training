@@ -34,7 +34,8 @@ Let's write some code.
 - Module 4 - <a href="https://github.com/anthonygrees/policyfiles_training/blob/master/module/part_d.md">Apply Policy Groups to a Node</a>
 - Module 5 - <a href="https://github.com/anthonygrees/policyfiles_training/blob/master/module/part_e.md">Using attributes with Policy Group</a>
 - Module 6 - <a href="https://github.com/anthonygrees/policyfiles_training/blob/master/module/part_f.md">Exporting Policyfiles and using Archives</a>
-- Module 7 - <a href="https://github.com/anthonygrees/policyfiles_training/blob/master/module/part_z.md">Tips and Tricks</a>
+- Module 7 - <a href="https://github.com/anthonygrees/policyfiles_training/blob/master/module/part_y.md">How are Policyfiles shown in Chef Automate 2</a>
+- Module 8 - <a href="https://github.com/anthonygrees/policyfiles_training/blob/master/module/part_z.md">Tips and Tricks</a>
 
 ---
 ## License and Author
