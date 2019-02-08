@@ -17,7 +17,7 @@ node['myapp']['title']
 The correct attribute would then be provided based on the policy_group of the node, so with a policy_group of staging the attribute would contain "My Staging App".
 
 #### Attribute case statements
-Similare to the example abouve, you can also leverage a ```case``` statement to dynamically determine attributes in the policyfile.
+Similar to the example above, you can also leverage a ```case``` statement to dynamically determine attributes in the policyfile.
 ```
 case node.policy_group
 when 'prod_dc1'
