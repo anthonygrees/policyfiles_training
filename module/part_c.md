@@ -77,7 +77,6 @@ C:\Users\chef\cookbooks\policies>
 ```
 
 ##### Note: You can also use the ```include_policy```
-https://github.com/chef/chef-rfc/blob/master/rfc097-policyfile-includes.md 
 The addition of a ```include_policy``` directive will allow the following:
 
 ```include_policy "base", git: "github.com/myorg/policies.git", path: "foo/bar/baz.lock.json"```
@@ -105,6 +104,8 @@ To use a locked policy from git:
 To use a locked policy from git with a specific commit SHA:
 
 ```include_policy "policy_name", git: "github.com/chef/policy_example", sha: "abcd1234", path: "./foo/bar"```
+
+You can read about more here - https://github.com/chef/chef-rfc/blob/master/rfc097-policyfile-includes.md  
 
 #### Step 3: Take a look at the ```enterprise.lock.json```
 You will notice that there is a section called ```included_policy_locks``` that has the ```include``` for our base.rb
