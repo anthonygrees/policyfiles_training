@@ -1,7 +1,7 @@
-# Part D: Apply ```Policy_Groups``` to a Node
+### Part D: Apply ```Policy_Groups``` to a Node
 Let's assign the policies to Nodes
 
-## Step 1: What nodes do we have available ?
+#### Step 1: What nodes do we have available ?
 Start by checking what nodes are being managed by the Chef Server.
 
 Run the following command:
@@ -22,7 +22,7 @@ stage2
 C:\Users\chef\cookbooks\policies>
 ```
 
-## Step 2: Assign the ```dev1``` node to the ```enterprise``` policy and the ```dev_dc1``` policy group
+#### Step 2: Assign the ```dev1``` node to the ```enterprise``` policy and the ```dev_dc1``` policy group
 Run the following command:
 ```
 $ knife node policy set dev1 dev_dc1 enterprise
@@ -35,7 +35,7 @@ Successfully set the policy on node dev1
 C:\Users\chef\cookbooks\policies>
 ```
 
-## Step 3: Check the policy group is assigned to the node
+#### Step 3: Check the policy group is assigned to the node
 Run the following command:
 ```
 $ knife node show dev1
