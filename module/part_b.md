@@ -1,5 +1,5 @@
-# Part B: Now lets MODIFY the Base Policyfile
-## Step 1: Update the attributes via policyfile
+### Part B: Now lets MODIFY the Base Policyfile
+#### Step 1: Update the attributes via policyfile
 Policyfiles allow us to set attributes. Since Policyfiles don’t support roles, these attributes replace role attributes in the precedence hierarchy. In our ```base.rb``` policyfile, we set attributes using the same syntax we use in cookbooks. 
 
 Add the following lines to the bottom of your ```base.rb``` policyfile:
@@ -9,7 +9,7 @@ override['chef_client']['interval']    = '200'
 override['chef_client']['splay']       = '30'
 ```
 
-## Step 2: Update the ```policyfile``` lock file
+#### Step 2: Update the ```policyfile``` lock file
 Now run the ```chef update``` command to to apply the changes to the ```base.loc.json```:
 ```
 $ chef update base.rb
@@ -34,7 +34,7 @@ Policy revision id: 6e7735d685d3a602c7b97ae2eedaf30b126f7820a83a56abe1457aec5643
 C:\Users\chef\cookbooks\policyfiles>
 ```
 
-## Step 3: Take another look at the lockfile again
+#### Step 3: Take another look at the lockfile again
 We have updated the attributes for the ```chef_client``` and used an override.  We will see this in the ```base.lock.json``` under the ```default_attributes``` section.
 You can see that we have overridden the ```interval``` and the ```splay```.
 ```
@@ -49,7 +49,7 @@ You can see that we have overridden the ```interval``` and the ```splay```.
   },
 ```
 
-## Step 4: Promote to the Development Policy Group
+#### Step 4: Promote to the Development Policy Group
 Let's upload the policyfile to the Chef Server and add it to the Policy Group of ```dev_dc1`` for development in Data Center 1.
 
 ```
@@ -69,10 +69,10 @@ Using    windows     5.2.3  (b9450a24)
 C:\Users\chef\cookbooks\policies>
 ```
 
-## Step 5: Compare changes in Development to System Test and Production
+#### Step 5: Compare changes in Development to System Test and Production
 How do we know what changes are where ????
 
-### Check the Policy
+##### Check the Policy
 Run the ```chef show-policy``` command
 ```
 $ chef show-policy base
@@ -90,7 +90,7 @@ base
 C:\Users\chef\cookbooks\policies>
 ```
 
-### Compare with ```chef diff```
+##### Compare with ```chef diff```
 Use the ```chef diff``` subcommand to display an itemized comparison of two revisions of a ```Policyfile.lock.json``` file.
 
 Run the following command to see the difference between Development DC1 and Production DC1
