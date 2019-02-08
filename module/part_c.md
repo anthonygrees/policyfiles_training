@@ -77,6 +77,7 @@ C:\Users\chef\cookbooks\policies>
 ```
 
 ##### Note: You can also use the ```include_policy```
+https://github.com/chef/chef-rfc/blob/master/rfc097-policyfile-includes.md 
 The addition of a ```include_policy``` directive will allow the following:
 
 ```include_policy "base", git: "github.com/myorg/policies.git", path: "foo/bar/baz.lock.json"```
