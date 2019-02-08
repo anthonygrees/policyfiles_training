@@ -1,7 +1,7 @@
-# Part C: Policyfiles can inherit other Policyfiles !
+### Part C: Policyfiles can inherit other Policyfiles !
 We can use our base policyfile in other policyfiles.  Let's create a enterprise policyfile now.
 
-## Step 1: CREATE a new ```policyfile``` called enterprise
+#### Step 1: CREATE a new ```policyfile``` called enterprise
 Run the following command:
 ```
 $ chef generate policyfile enterprise
@@ -18,7 +18,7 @@ Recipe: code_generator::policyfile
 C:\Users\chef\cookbooks\policies>
 ```
 
-## Step 2: Edit the enterprise.rb file
+#### Step 2: Edit the enterprise.rb file
 Now edit the file
 ```
 $ code enterprise.rb
@@ -76,7 +76,33 @@ Policy revision id: 2c0e98fbaf62f59066821d20b31ad92e11869b71092e7af02174f647fd84
 C:\Users\chef\cookbooks\policies>
 ```
 
-## Step 3: Take a look at the ```enterprise.lock.json```
+##### Note: You can also use the ```include_policy```
+The addition of a ```include_policy``` directive will allow the following:
+
+```include_policy "base", git: "github.com/myorg/policies.git", path: "foo/bar/baz.lock.json"```
+The ```include_policy``` directive will support three sources for policies: git, chef server, and a local path.
+
+- To use a locked policy from a local path:
+
+```include_policy "policy_name", path: "./foo/bar"```
+- To use a locked policy from a chef server with a specific revision id:
+
+```include_policy "policy_name", policy_revision_id: "abcdabcdabcd", server: "http://example.com"```
+
+- or if the policy name on the chef server differs from the policyfile:
+
+```include_policy "policy_name", policy_revision_id: "abcdabcdabcd", policy_name: "specific_policy_name", server: "http://example.com"```
+When using a chef server as the source, it's also possible to specify a policy group instead of a revision. When doing this, the revision of the included policy at the time the lock is created will become part of the lock data:
+
+```include_policy "policy_name", policy_group: "prod", policy_name: "specific_policy_name", server: "http://example.com"```
+To use a locked policy from git:
+
+```include_policy "policy_name", git: "github.com/chef/policy_example", path: "./foo/bar"```
+To use a locked policy from git with a specific commit SHA:
+
+```include_policy "policy_name", git: "github.com/chef/policy_example", sha: "abcd1234", path: "./foo/bar"```
+
+#### Step 3: Take a look at the ```enterprise.lock.json```
 You will notice that there is a section called ```included_policy_locks``` that has the ```include``` for our base.rb
 
 ```
@@ -91,7 +117,7 @@ You will notice that there is a section called ```included_policy_locks``` that 
   ],
   ```
   
-## Step 4: Promote to the Development Policy Group
+#### Step 4: Promote to the Development Policy Group
 Let's upload the policyfile to the Chef Server and add it to the Policy Group of ```dev_dc1`` for development in Data Center 1.
 
 ```
@@ -112,9 +138,9 @@ Using    windows     5.2.3  (b9450a24)
 C:\Users\chef\cookbooks\policies>
 ```
 
-## Step 5: Check the Policy
+#### Step 5: Check the Policy
 
-### First, let's check the ```enterprise policyfile```
+##### First, let's check the ```enterprise policyfile```
 Run the ```chef show-policy``` command
 ```
 $ chef show-policy enterprise
@@ -132,7 +158,7 @@ enterprise
 C:\Users\chef\cookbooks\policies>
 ```
 
-### Now, let's check both the ```base``` and ```enterprise policyfiles```
+##### Now, let's check both the ```base``` and ```enterprise policyfiles```
 Run the ```chef show-policy``` command
 ```
 $ chef show-policy
