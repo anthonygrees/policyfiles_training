@@ -80,8 +80,8 @@ C:\Users\chef\cookbooks\policies>
 The addition of a ```include_policy``` directive will allow the following:
 
 ```include_policy "base", git: "github.com/myorg/policies.git", path: "foo/bar/baz.lock.json"```
-The ```include_policy``` directive will support three sources for policies: git, chef server, and a local path.
 
+The ```include_policy``` directive will support three sources for policies: git, chef server, and a local path.
 - To use a locked policy from a local path:
 
 ```include_policy "policy_name", path: "./foo/bar"```
@@ -92,12 +92,15 @@ The ```include_policy``` directive will support three sources for policies: git,
 - or if the policy name on the chef server differs from the policyfile:
 
 ```include_policy "policy_name", policy_revision_id: "abcdabcdabcd", policy_name: "specific_policy_name", server: "http://example.com"```
+
 When using a chef server as the source, it's also possible to specify a policy group instead of a revision. When doing this, the revision of the included policy at the time the lock is created will become part of the lock data:
 
 ```include_policy "policy_name", policy_group: "prod", policy_name: "specific_policy_name", server: "http://example.com"```
+
 To use a locked policy from git:
 
 ```include_policy "policy_name", git: "github.com/chef/policy_example", path: "./foo/bar"```
+
 To use a locked policy from git with a specific commit SHA:
 
 ```include_policy "policy_name", git: "github.com/chef/policy_example", sha: "abcd1234", path: "./foo/bar"```
