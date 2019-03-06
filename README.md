@@ -7,6 +7,12 @@ Policies are built by defining a Policyfile, which looks similar to a Chef Role 
 
 When a Policy is ready for upload, a workstation command included with the ChefDK compiles the Policyfile into a ```Policyfile.lock``` file. This locked Policy, along with all of the cookbooks it references, are treated as a single unit by the Chef tooling. The bundle of ```Policyfile.lock``` and cookbooks are uploaded to the server simultaneously. 
 
+Policyfiles have a number of clear benefits:
+ - They ensure the cookbooks running in production are the same versions that were tested against; providing safer development workflows
+ - They solve the Roles versioning issue
+ - They streamline the Roles and Environments patterns and dependency management into a single workflow
+ - This reduction of discreet concepts reduces the learning curve for getting started with Chef
+
 ## Why use Policyfiles ?
 Policyfiles provide cookbook dependency management and replaces roles and environments. This allows you to get exact, repeatable results !
 
