@@ -43,6 +43,15 @@ Let's write some code.
 - Module 7 - <a href="https://github.com/anthonygrees/policyfiles_training/blob/master/module/part_y.md">How are Policyfiles shown in Chef Automate 2</a>
 - Module 8 - <a href="https://github.com/anthonygrees/policyfiles_training/blob/master/module/part_z.md">Tips and Tricks</a>
 
+## Other Policyfiles Resources
+ - Blog Post - <a href="https://blog.chef.io/2019/03/05/policyfiles-a-chef-best-practice/">Policyfiles a Chef Best Practice</a> 
+ - Learn Chef Rally Part 1 - <a href="https://learn.chef.io/modules/getting-started-with-policyfiles#/">Getting started with Policyfiles</a>
+ - Learn Chef Rally Part2 - <a href="https://learn.chef.io/modules/managing-nodes-with-policyfiles#/">Managing Nodes with Policyfiles</a>
+ - Video Demo
+
+[![Alt text](https://img.youtube.com/vi/n4rbrYpcuMk/0.jpg)](https://youtu.be/n4rbrYpcuMk)
+
+
 ---
 ## License and Author
 
