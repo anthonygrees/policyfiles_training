@@ -1,6 +1,6 @@
 ### Part B: Now lets MODIFY the Base Policyfile
 #### Step 1: Update the attributes via policyfile
-Policyfiles allow us to set attributes. Since Policyfiles don’t support roles, these attributes replace role attributes in the precedence hierarchy. In our ```base.rb``` policyfile, we set attributes using the same syntax we use in cookbooks. 
+Policyfiles allow us to set attributes. Since Policyfiles don’t support roles, these attributes replace role attributes in the precedence hierarchy. In our ```base.rb``` policyfile, we set attributes using the same syntax we use in cookbooks.
 
 Add the following lines to the bottom of your ```base.rb``` policyfile:
 ```
@@ -10,7 +10,7 @@ override['chef_client']['splay']       = '30'
 ```
 
 #### Step 2: Update the ```policyfile``` lock file
-Now run the ```chef update``` command to to apply the changes to the ```base.loc.json```:
+Now run the ```chef update``` command to to apply the changes to the ```base.lock.json```:
 ```
 $ chef update base.rb
 ```
@@ -70,7 +70,7 @@ C:\Users\chef\cookbooks\policies>
 ```
 
 #### Step 5: Compare changes in Development to System Test and Production
-How do we know what changes are where ????
+How do we know which changes are where????
 
 ##### Check the Policy
 Run the ```chef show-policy``` command
