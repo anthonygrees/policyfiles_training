@@ -1,5 +1,5 @@
 # Part F: Export a Policyfile and use the Archive
-Use the chef export subcommand to create a chef-zero-compatible chef-repo that contains the cookbooks described by a Policyfile.lock.json file. After a chef-zero-compatible chef-repo is copied to a node, the policy can be applied locally on that machine by running chef-client -z (local mode).
+Use the ```chef export``` subcommand to create a chef-zero-compatible chef-repo that contains the cookbooks described by a ```Policyfile.lock.json``` file. After a chef-zero-compatible chef-repo is copied to a node, the policy can be applied locally on that machine by running ```chef-client -z``` (local mode).
 
 ## Step 1: Export the policyfile
 Run the command to export as a tarball:
@@ -15,7 +15,7 @@ C:\Users\chef\cookbooks\policies>
 ```
 
 ## Step 2: Push the Archive to a Chef Server
-The chef push-archive subcommand is used to publish a policy archive file to the Chef server. (A policy archive is created using the chef export subcommand.) The policy archive is assigned to the specified policy group, which is a set of nodes that share the same run-list and cookbooks.
+The ```chef push-archive``` subcommand is used to publish a policy archive file to the Chef server. (A policy archive is created using the ```chef export``` subcommand.) The policy archive is assigned to the specified policy group, which is a set of nodes that share the same run-list and cookbooks.
 
 Run the command to push the tarball:
 ```

@@ -1,5 +1,5 @@
 ### Part D: Apply ```Policy_Groups``` to a Node
-Let's assign the policies to Nodes
+Let's assign the Policies to Nodes
 
 #### Step 1: What nodes do we have available ?
 Start by checking what nodes are being managed by the Chef Server.

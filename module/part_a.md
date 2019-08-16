@@ -52,12 +52,12 @@ Here are some examples:
 default_source :supermarket  # Public Supermarket
 default_source :supermarket, "https://mysupermarket.example"  # Private Supermarkey
 default_source :chef_server, "https://chef-server.example/organizations/example"
-default_source :chef_repo, "path/to/repo" 
+default_source :chef_repo, "path/to/repo"
 default_source :artifactory, "https://artifactory.example/api/chef/my-supermarket
 ```
 
 #### Step 2: Generate the ```lock``` file
-With our basic base.rb policyfile, we run ```chef install`` to fetch dependencies and generate a ```base.lock.json```.
+With our basic base.rb policyfile, we run ```chef install``` to fetch dependencies and generate a ```base.lock.json```.
 
 So run the following command:
 ```
@@ -82,7 +82,7 @@ C:\Users\chef\cookbooks\policyfiles>
 ```
 
 #### Step 3: Let's take a look at the lock file
-Let’s take a look at the base.lock.json we just created. We’ll go over each part individually:
+Let’s take a look at the ```base.lock.json``` we just created. We’ll go over each part individually:
 
 Run the collowing command:
 ```
@@ -107,9 +107,9 @@ In this example, you will see that it has selected the ```default``` recipe for 
 ```
 
 ##### Cookbook Locks
-For each cookbook we use, there is a corresponding entry in the ```cookbook_locks``` section. The exact data collected about each cookbook is dependent on the cookbook’s source. In this case, we have a cookbook sourced from GitHub which is a git repo. In the event we need to debug this cookbook later, ChefDK has collected information about the cookbook’s git revision. 
+For each cookbook we use, there is a corresponding entry in the ```cookbook_locks``` section. The exact data collected about each cookbook is dependent on the cookbook’s source. In this case, we have a cookbook sourced from GitHub which is a git repo. In the event we need to debug this cookbook later, ChefDK has collected information about the cookbook’s git revision.
 
-You will notice that it has included more cookbooks than we specified.  This is because the ```Audit``` and ```Chef_Client``` cookbooks have dependant cookbooks.  The policyfile tracks each and every one !
+You will notice that it has included more cookbooks than we specified.  This is because the ```audit``` and ```chef_client``` cookbooks have dependent cookbooks.  The policyfile tracks each and every one!
 
 ```
   "cookbook_locks": {
@@ -208,9 +208,9 @@ You can ignore the ```solution_dependencies``` section. It’s used to keep trac
 To do this we need to understand about ```policy_group```s.  A policy group is essentially an environment and allows you to assign multiple nodes to the group of policies.
 
 ##### Promote to the Development Policy Group
-Let's upload the policyfile to the Chef Server and add it to the Policy Group of ```dev_dc1`` for development in Data Center 1.
+Let's upload the policyfile to the Chef Server and add it to the Policy Group of ```dev_dc1``` for development in Data Center 1.
 
-To do this, we use the chef push subcommand to upload an existing Policyfile.lock.json file to the Chef server, along with all of the cookbooks that are contained in the file. The ```base.lock.json``` file will be applied to the specified policy group, which is a set of nodes that share the same run-list and cookbooks.
+To do this, we use the ```chef push``` subcommand to upload an existing ```Policyfile.lock.json``` file to the Chef server, along with all of the cookbooks that are contained in the file. The ```base.lock.json``` file will be applied to the specified policy group, which is a set of nodes that share the same run-list and cookbooks.
 ```
 $ chef push dev_dc1 base.rb
 ```
@@ -235,13 +235,13 @@ $ chef push sys_dc1 base.rb
 ```
 
 ##### Promote to the Production Test Policy Group
-Your testing in ```sys_dc1`` has passed.  Let's promote to policy group ```prod_dc1```.
+Your testing in ```sys_dc1``` has passed.  Let's promote to policy group ```prod_dc1```.
 ```
 $ chef push prod_dc1 base.rb
 ```
 
 ##### How do you know which Policy is on a Chef Server ?
-Use the ```chef show-policy``` subcommand to display revisions for every base.rb file that is on the Chef server. By default, only active policy revisions are shown. When both a policy and policy group are specified, the contents of the active ```base.lock.json``` file for the policy group is returned.
+Use the ```chef show-policy``` subcommand to display revisions for every ```base.rb``` file that is on the Chef server. By default, only active policy revisions are shown. When both a policy and policy group are specified, the contents of the active ```base.lock.json``` file for the policy group is returned.
 
 ```
 $ chef show-policy base
