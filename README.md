@@ -34,6 +34,7 @@ This training lab is a hands on set of code examples to show you how ```policyfi
 
 Let's write some code.
 
+- Setup - <a href="https://github.com/anthonygrees/policyfiles_training/blob/master/module/setup.md">Create a Chef Server Org</a>
 - Module 1 - <a href="https://github.com/anthonygrees/policyfiles_training/blob/master/module/part_a.md">Create a Policyfile</a>
 - Module 2 - <a href="https://github.com/anthonygrees/policyfiles_training/blob/master/module/part_b.md">Modify a Policyfile</a>
 - Module 3 - <a href="https://github.com/anthonygrees/policyfiles_training/blob/master/module/part_c.md">How Policyfiles can inherit other policyfiles</a>
