@@ -2,7 +2,7 @@
 #### Step 1: Create a base policyfile
 The base policyfile will be used by all the nodes.
 
-Run the following command in the directory ```C:\Users\chef\cookbooks\policies>```. If the directory does not exist, create it:
+Run the following command in the directory ```C:\chef-repo\policyfiles```. If the directory does not exist, create it:
 ```
 $ chef generate policyfile base
 ```
